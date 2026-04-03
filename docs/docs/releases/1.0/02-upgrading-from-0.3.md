@@ -459,6 +459,10 @@ When `orphanedRowAction` is `"nullify"` (the default) and the foreign key column
 
 If you were relying on the error to prevent accidental child deletion, set `orphanedRowAction: "disable"` on the relation to preserve the old behavior.
 
+### Many-to-many junction rows and soft-deleted entities
+
+Many-to-many relation ID queries now include soft-deleted related entities when resolving the current state of junction bindings. This fixes a bug where `recover()` on a soft-deleted entity with many-to-many relations would throw a duplicate key violation (junction rows were not touched by `softRemove`, but the relation ID loader couldn't see them because soft-deleted entities were filtered out). As a side effect, if you explicitly set a many-to-many relation array during `save()` and a previously related entity was independently soft-deleted, its junction row will now be removed — previously it was invisible to the junction comparison and preserved. This only applies when the relation property is explicitly set; if it is `undefined`, junction rows are left intact.
+
 ## Columns
 
 ### `readonly` option removed
