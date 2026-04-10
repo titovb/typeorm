@@ -168,16 +168,14 @@ export function setupSingleTestingConnection(
     options: TestingOptions,
 ): DataSourceOptions | undefined {
     const testingConnections = setupTestingConnections({
-        entities: options.entities ? options.entities : [],
-        subscribers: options.subscribers ? options.subscribers : [],
-        dropSchema: options.dropSchema ? options.dropSchema : false,
-        schemaCreate: options.schemaCreate ? options.schemaCreate : false,
+        entities: options.entities ?? [],
+        subscribers: options.subscribers ?? [],
+        dropSchema: options.dropSchema ?? false,
+        schemaCreate: options.schemaCreate ?? false,
         enabledDrivers: [driverType],
         cache: options.cache,
-        schema: options.schema ? options.schema : undefined,
-        namingStrategy: options.namingStrategy
-            ? options.namingStrategy
-            : undefined,
+        schema: options.schema ?? undefined,
+        namingStrategy: options.namingStrategy ?? undefined,
     })
     if (!testingConnections.length) return undefined
 
@@ -244,16 +242,11 @@ export function setupTestingConnections(
                 {},
                 connectionOptions as DataSourceOptions,
                 {
-                    entities: options?.entities ? options.entities : [],
-                    migrations: options?.migrations ? options.migrations : [],
-                    subscribers: options?.subscribers
-                        ? options.subscribers
-                        : [],
-                    dropSchema:
-                        options?.dropSchema !== undefined
-                            ? options.dropSchema
-                            : false,
-                    cache: options ? options.cache : undefined,
+                    entities: options?.entities ?? [],
+                    migrations: options?.migrations ?? [],
+                    subscribers: options?.subscribers ?? [],
+                    dropSchema: options?.dropSchema ?? false,
+                    cache: options?.cache,
                 },
             )
             if (options?.driverSpecific)

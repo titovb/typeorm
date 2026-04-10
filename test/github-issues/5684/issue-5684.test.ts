@@ -51,7 +51,7 @@ describe("github issues > #5684 eager relation skips children relations", () => 
                         2,
                         "loads nested relation of an eager relation",
                     )
-                    for (const member of user?.company.staff || []) {
+                    for (const member of user?.company.staff ?? []) {
                         expect(member).to.be.a.instanceOf(
                             User,
                             "loads nested relation of an eager relation",

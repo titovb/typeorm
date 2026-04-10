@@ -135,7 +135,7 @@ export class DriverUtils {
         buildOptions: { shorten?: boolean; joiner?: string } | undefined,
         ...alias: string[]
     ): string {
-        const joiner = buildOptions?.joiner ? buildOptions.joiner : "_"
+        const joiner = buildOptions?.joiner ?? "_"
 
         const newAlias = alias.length === 1 ? alias[0] : alias.join(joiner)
 
@@ -179,6 +179,8 @@ export class DriverUtils {
         if (afterBase && afterBase.indexOf("?") !== -1) {
             afterBase = afterBase.substring(0, afterBase.indexOf("?"))
         }
+        // normalize empty string to undefined so downstream ?? works correctly
+        if (afterBase === "") afterBase = undefined
 
         const lastAtSign = base.lastIndexOf("@")
         const usernameAndPassword = base.substring(0, lastAtSign)
@@ -199,7 +201,7 @@ export class DriverUtils {
             username: decodeURIComponent(username),
             password: decodeURIComponent(password),
             port: port ? parseInt(port) : undefined,
-            database: afterBase || undefined,
+            database: afterBase ?? undefined,
         }
     }
 
@@ -217,6 +219,8 @@ export class DriverUtils {
             secondSlash !== -1 ? preBase.substring(0, secondSlash) : preBase
         let afterBase =
             secondSlash !== -1 ? preBase.substring(secondSlash + 1) : undefined
+        // normalize empty string to undefined so downstream ?? works correctly
+        if (afterBase === "") afterBase = undefined
         let afterQuestionMark: string
         let host = undefined
         let port = undefined
@@ -274,7 +278,7 @@ export class DriverUtils {
             username: decodeURIComponent(username),
             password: decodeURIComponent(password),
             port: port ? parseInt(port) : undefined,
-            database: afterBase || undefined,
+            database: afterBase ?? undefined,
         }
 
         // Loop to set every options in connectionUrl to object
